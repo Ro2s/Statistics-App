@@ -1,0 +1,588 @@
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+input[type="date"] {
+    -webkit-appearance: none;
+    min-height: 2.5rem;
+    padding: 0.375rem 0.75rem;
+}
+
+input, select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 6px !important;
+}
+
+.ios-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 9999;
+    max-width: 90%;
+    width: 300px;
+}
+
+.ios-alert .alert-content {
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.ios-alert .alert-buttons {
+    text-align: right;
+}
+
+.ios-alert button {
+    background: #007AFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.group-controls {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.input-group {
+    flex: 1;
+    min-width: 0; /* Permet au flex-basis de fonctionner correctement */
+}
+
+.import-export-controls {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.import-export-controls .btn {
+    white-space: nowrap;
+    padding: 0.375rem 1rem;
+}
+
+/* Ajustements responsifs */
+@media (max-width: 768px) {
+    .group-controls {
+        flex-direction: column;
+    }
+    
+    .import-export-controls {
+        width: 100%;
+    }
+    
+    .import-export-controls .btn {
+        width: 100%;
+    }
+    
+    .group-actions {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Correction du style des boutons */
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+    color: white;
+}
+
+/* Pour les boutons sur iOS */
+.btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Pour le scroll sur iOS */
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f4f8; /* Updated for better contrast */
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    background-color: white;
+    padding: 20px;
+}
+
+div #nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+h1 {
+    color: #333; /* Darker text color for headings */
+}
+
+button {
+    transition: background-color 0.3s;/* Added transition for Bootstrap buttons */
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+/* Base styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f7fb;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+}
+
+/* Container styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Card styles */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    background-color: white;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Heading styles */
+h1 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+h3, h4 {
+    color: #34495e;
+    font-weight: 600;
+}
+
+/* Form controls */
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #dce4ec;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    border-color: #2ecc71;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+/* Group management styles */
+.d-flex.gap-2 {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.import-group {
+    flex-shrink: 0;
+}
+
+/* Ajustements responsive */
+@media (max-width: 768px) {
+    .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .import-group {
+        width: 100%;
+    }
+
+    .import-group .btn {
+        width: 100%;
+    }
+
+    .group-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .group-actions .btn {
+        width: 100%;
+    }
+    
+    .import-group .btn, .group-actions .btn {
+        display: block !important;
+    }
+}
+
+/* Style pour les boutons d'action */
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+    color: white;
+}
+
+
+.group-management .list-group-item {
+    border: 1px solid #eee;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.group-management .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.group-name {
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.group-name small {
+    font-size: 0.85rem;
+}
+
+/* Statistics builder styles */
+.statistics-builder .table {
+    margin-bottom: 0;
+}
+
+.statistics-builder .table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    color: #2c3e50;
+}
+
+.statistics-builder .table td {
+    vertical-align: middle;
+}
+
+/* Custom checkbox styles */
+.custom-control-input:checked ~ .custom-control-label::before {
+    border-color: #3498db;
+    background-color: #3498db;
+}
+
+/* Statistics cards */
+.stat-card {
+    background-color: #fff;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-card h4 {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Generated text styles */
+.generated-text pre {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Navigation styles */
+#nav {
+    gap: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .group-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animations */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+
+/* Table improvements */
+.table-hover tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* Date input styling */
+input[type="date"] {
+    height: calc(1.5em + 1.5rem);
+}
+
+/* Loading states */
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* ... Autres styles existants ... */
+
+/* Input group improvements */
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.input-group .form-control {
+    flex: 1;
+    height: 38px;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+}
+
+.input-group-append {
+    display: flex;
+}
+
+.input-group-append .btn {
+    white-space: nowrap;
+    height: 38px;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+}
+
+/* Select element styling to match buttons */
+select.form-control {
+    height: 38px;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+}
+
+#resultats {
+    will-change: transform, opacity;
+}
+
+/* Retirer le scroll-behavior: smooth pour éviter les conflits */
+html {
+    scroll-behavior: auto;
+}
+
+/* Optimisations pour les performances */
+.stat-card {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Pour garantir que l'animation fonctionne sur tous les navigateurs */
+@media screen and (prefers-reduced-motion: reduce) {
+    #resultats {
+        transition: none !important;
+        transform: none !important;
+    }
+    
+    .stat-card {
+        transform: none !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    /* Ajustement pour le titre du groupe */
+    .statistics-builder h1 {
+        display: none !important;
+    }
+
+    /* Ajustement des conteneurs d'inputs */
+    #nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #nav > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    /* Style pour les inputs et leurs boutons */
+    .input-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .input-group .form-control {
+        width: 100%;
+    }
+
+    .input-group-append {
+        width: 100%;
+    }
+
+    .input-group-append .btn {
+        width: 100%;
+    }
+
+    /* Style pour le sélecteur de membre et son bouton */
+    select.form-control {
+        width: 100%;
+    }
+
+    .mb-2 {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .mb-2 .btn {
+        width: 100%;
+    }
+
+    .group-name {
+        font-size: 0.9rem;
+    }
+
+    .group-name small {
+        font-size: 0.75rem;
+    }
+
+    .group-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .list-group-item {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Desktop specific adjustments */
+@media (min-width: 769px) {
+    .input-group {
+        align-items: stretch;
+    }
+    
+    .input-group-append .btn {
+        display: flex;
+        align-items: center;
+    }
+
+    .list-group-item {
+        align-items: center;
+    }
+
+    .group-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+}

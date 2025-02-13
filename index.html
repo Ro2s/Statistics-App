@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="format-detection" content="telephone=no">
+        <title>Statistiques Groupes</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    </head>
+
+    <body>
+        <div id="app" class="container mt-4">
+            <!-- Section Gestion des Groupes -->
+            <div v-if="!showStatBuilder" class="group-management">
+                <h1 class="text-center mb-4">Gestion des Groupes</h1>
+                
+                <!-- Formulaire de création de groupe -->
+                <div class="row mb-4">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="group-controls">
+                            <div class="input-group">
+                                <input 
+                                    v-model="newGroupName" 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="Nom du nouveau groupe"
+                                    @keyup.enter="addGroup"
+                                >
+                                <div class="input-group-append">
+                                    <button @click="addGroup" class="btn btn-primary">
+                                        <i class="fas fa-plus mr-1"></i> Créer Groupe
+                                    </button>
+                                </div>
+                            </div>
+                            <button @click.prevent="triggerFileInput" 
+                                    class="btn btn-info btn-sm">
+                                <i class="fas fa-file-import mr-1"></i> Importer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des groupes -->
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="list-group">
+                            <div v-for="group in groups" 
+                                 :key="group.name" 
+                                 class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="group-name">
+                                    <i class="fas fa-users mr-2"></i>
+                                    {{ group.name }}
+                                    <small class="text-muted ml-2">({{ group.people.length }} membres)</small>
+                                </span>
+                                <div class="group-actions">
+                                    <button @click.prevent="selectGroup(group.name)" 
+                                            class="btn btn-success btn-sm">
+                                        <i class="fas fa-check mr-1"></i> Sélectionner
+                                    </button>
+                                    <button @click.prevent="exportGroup(group.name)" 
+                                            class="btn btn-info btn-sm">
+                                        <i class="fas fa-file-export mr-1"></i> Exporter
+                                    </button>
+                                    <button @click.prevent="removeGroup(group.name)" 
+                                            class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash mr-1"></i> Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Statistics Builder -->
+            <div v-if="showStatBuilder" class="statistics-builder">
+                <!-- En-tête avec sélecteur de groupe -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex align-items-center">
+                        <button @click="showStatBuilder = false" 
+                                class="btn btn-outline-secondary mr-3">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h1 class="mb-0">{{ selectedGroup }}</h1>
+                    </div>
+                    <div class="group-selector">
+                        <select v-model="selectedGroup" 
+                                @change="selectGroup(selectedGroup)" 
+                                class="form-control">
+                            <option v-for="group in groups" 
+                                    :key="group.name" 
+                                    :value="group.name">
+                                {{ group.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Gestion des membres -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div id="nav" class="d-flex justify-content-between flex-wrap">
+                            <div class="mb-2">
+                                <div class="input-group">
+                                    <input v-model="newName" 
+                                           type="text" 
+                                           placeholder="Nom du membre" 
+                                           class="form-control"
+                                           @keyup.enter="addPerson">
+                                    <div class="input-group-append">
+                                        <button @click="addPerson" class="btn btn-primary">
+                                            <i class="fas fa-user-plus mr-1"></i> Ajouter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <select v-model="selectedPerson" class="form-control d-inline-block mr-2">
+                                    <option value="">Sélectionner un membre</option>
+                                    <option v-for="person in people" 
+                                            :key="person.name" 
+                                            :value="person.name">
+                                        {{ person.name }}
+                                    </option>
+                                </select>
+                                <button @click="removePerson" 
+                                        class="btn btn-danger"
+                                        :disabled="!selectedPerson">
+                                    <i class="fas fa-user-minus mr-1"></i> Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tableau des présences -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Nom</th>
+                                    <th class="text-center">Présent</th>
+                                    <th class="text-center">Absent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(person, index) in people" :key="index">
+                                    <td>{{ person.name }}</td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" 
+                                                   class="custom-control-input" 
+                                                   :id="'present-' + index"
+                                                   v-model="person.present" 
+                                                   @change="updateAbsent(person)">
+                                            <label class="custom-control-label" :for="'present-' + index"></label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" 
+                                                   class="custom-control-input" 
+                                                   :id="'absent-' + index"
+                                                   v-model="person.absent" 
+                                                   @change="updatePresent(person)">
+                                            <label class="custom-control-label" :for="'absent-' + index"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Nouveau tableau pour les invités et sympathisants -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="mb-3">Invités et Sympathisants</h4>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input v-model="newExtraMemberName" 
+                                       type="text" 
+                                       class="form-control"
+                                       placeholder="Nom de la personne"
+                                       @keyup.enter="addExtraMember">
+                                <div class="input-group-append">
+                                    <select v-model="newExtraMemberType" class="form-control">
+                                        <option value="invited">Invité</option>
+                                        <option value="sympathizer">Sympathisant</option>
+                                    </select>
+                                    <button @click="addExtraMember" class="btn btn-primary">
+                                        <i class="fas fa-plus mr-1"></i> Ajouter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <table v-if="hasExtraMembers" class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="w-50">Invités</th>
+                                    <th class="w-50">Sympathisants</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-top">
+                                        <div v-for="member in invitedMembers" :key="member.name" class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>{{ member.name }}</span>
+                                            <button @click="removeExtraMember(member)" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="align-top">
+                                        <div v-for="member in sympathizerMembers" :key="member.name" class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>{{ member.name }}</span>
+                                            <button @click="removeExtraMember(member)" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section Date et Génération -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-end">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">Date de la session</label>
+                                <input v-model="selectedDate" 
+                                       type="date" 
+                                       id="date" 
+                                       class="form-control">
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button @click="generateStatistics"
+                                        href="#resultats"
+                                        class="btn btn-success"
+                                        :disabled="!selectedDate">
+                                    <i class="fas fa-chart-bar mr-1"></i> Générer les Statistiques
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Résultats des statistiques -->
+                <div v-if="statistics" id="resultats" class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Résultats</h3>
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="stat-card text-center p-3 border rounded">
+                                    <h4>Total</h4>
+                                    <p class="h2">{{ statistics.total }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-card text-center p-3 border rounded">
+                                    <h4>Présents</h4>
+                                    <p class="h2">{{ statistics.present }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-card text-center p-3 border rounded">
+                                    <h4>Absents</h4>
+                                    <p class="h2">{{ statistics.absent }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-card text-center p-3 border rounded">
+                                    <h4>Taux</h4>
+                                    <p class="h2">{{ statistics.presencePercentage }}%</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="generated-text mb-4">
+                            <h4>Texte Généré</h4>
+                            <pre class="bg-light p-3 rounded">{{ generatedText }}</pre>
+                        </div>
+
+                        <button @click="generatePDF" class="btn btn-danger">
+                            <i class="fas fa-file-pdf mr-1"></i> Télécharger le PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="script.js"></script>
+    </body>
+</html>
