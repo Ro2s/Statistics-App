@@ -191,16 +191,16 @@
                         <div class="mb-3">
                             <div class="input-group">
                                 <input v-model="newExtraMemberName" 
-                                       type="text" 
-                                       class="form-control"
-                                       placeholder="Nom de la personne"
-                                       @keyup.enter="addExtraMember">
-                                <div class="input-group-append">
-                                    <select v-model="newExtraMemberType" class="form-control">
+                                   type="text" 
+                                   class="form-control"
+                                   placeholder="Nom de la personne"
+                                   @keyup.enter="addExtraMember">
+                                <div class="input-group-append mobile-input-group">
+                                    <select v-model="newExtraMemberType" class="form-control mobile-form-control">
                                         <option value="invited">Invité</option>
                                         <option value="sympathizer">Sympathisant</option>
                                     </select>
-                                    <button @click="addExtraMember" class="btn btn-primary">
+                                    <button @click="addExtraMember" class="btn btn-primary mobile-btn">
                                         <i class="fas fa-plus mr-1"></i> Ajouter
                                     </button>
                                 </div>

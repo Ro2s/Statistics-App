@@ -61,6 +61,25 @@ input, select {
     min-width: 0; /* Permet au flex-basis de fonctionner correctement */
 }
 
+.mobile-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mobile-form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.mobile-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
 .import-export-controls {
     display: flex;
     gap: 0.5rem;
